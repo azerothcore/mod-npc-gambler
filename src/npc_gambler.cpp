@@ -68,7 +68,7 @@ gold. Beware.. He doesn't like cheapskates!
 
 */
 
-#include "config.h"
+#include "Config.h"
 
 class GamblerAnnounce : public PlayerScript
 {
