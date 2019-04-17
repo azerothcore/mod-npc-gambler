@@ -33,6 +33,7 @@ defined in the configuration. It's a nice way for players to make a little extra
 
 ### Version
 
+- v2019.04.17 - Fix display of win/lose amount for values 100 or above, applicable to copper/silver/gold
 - v2019.04.15 - Ported to AzerothCore by gtao725 (https://github.com/gtao725/)
 - v2019.02.13 - Redesign, Add Coin Type Options, Update AI
 - v2018.12.09 - Update config

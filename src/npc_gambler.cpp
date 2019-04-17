@@ -34,6 +34,7 @@ defined in the configuration. It's a nice way for players to make a little extra
 
 ### Version
 ------------------------------------------------------------------------------------------------------------------
+- v2019.04.17 - Fix display of win/lose amount for values 100 or above, applicable to copper/silver/gold
 - v2019.04.15 - Ported to AzerothCore by gtao725 (https://github.com/gtao725/)
 - v2019.02.13 - Redesign, Add Coin Type Options, Update AI
 - v2018.12.09 - Update config
@@ -183,7 +184,7 @@ public:
             MoneyTypeText = "Gold";                     // Gamble Gold
             PlayerMoney = Copper / 10000;               // Player Gold
             BetAmount = ((bet * 10000) * 2);            // Bet value in Gold
-            WinAmount = BetAmount / 10000 % 100;        // Player Wins Gold
+            WinAmount = BetAmount / 10000;        // Player Wins Gold
             JackpotAmount = Jackpot * 10000;            // Jackpot value in Copper
         }
         else if (MoneyType == 2)
@@ -191,7 +192,7 @@ public:
             MoneyTypeText = "Silver";                   // Gamble Silver
             PlayerMoney = Copper / 100;                 // Player Silver
             BetAmount = ((bet * 100) * 2);              // Bet value in Silver
-            WinAmount = BetAmount / 100 % 100;          // Player Wins Silver
+            WinAmount = BetAmount / 100;          // Player Wins Silver
             JackpotAmount = Jackpot * 100;              // Jackpot value in Copper
         }
         else
@@ -199,7 +200,7 @@ public:
             MoneyTypeText = "Copper";                   // Gamble Copper
             PlayerMoney = Copper;                       // Player Copper 
             BetAmount = bet * 2;                        // Bet value in Copper
-            WinAmount = BetAmount % 100;                // Player Wins Copper
+            WinAmount = BetAmount;                // Player Wins Copper
             JackpotAmount = Jackpot * 1;                // Jackpot value in Copper
         }
 
