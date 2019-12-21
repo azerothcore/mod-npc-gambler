@@ -224,14 +224,14 @@ public:
         {
             std::ostringstream messageTaunt;
             messageTaunt << "Whadda we have here? A high-roller eh? Step right up " << player->GetName() << "!";
-            player->GetSession()->SendNotification(messageTaunt.str().c_str());
+            player->GetSession()->SendNotification( "%s",messageTaunt.str().c_str());
         }
 
         // Reset # of bets placed
         Bets = 0;
 
         // Clean up the display if using Copper or Silver
-        if (Pocket >= 100000 && MoneyType == 1 || Pocket >= 100000 && MoneyType == 2)
+        if ((Pocket >= 100000 && MoneyType == 1 )|| (Pocket >= 100000 && MoneyType == 2))
         {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
         }
@@ -404,7 +404,7 @@ public:
         {
             // If they have bet 10 times this session, decrement their roll 
             // by 1 to prevent a roll of 100 and hitting the jackpot. 
-            Roll = Roll - 1;
+            Roll = Roll -1;
         }
 
         // Calculate player money and bet values
@@ -412,7 +412,7 @@ public:
 
         // Losing Streak? Aww.. how about some help.
         // After 5 losses in a row, add +25 to their next roll.
-        if (Losses >= 5 && Roll < 50)
+        if (Losses >= 10 && Roll < 51)
         {
             std::ostringstream messageHelp;
             messageHelp << "Lady luck isn't on your side tonight " << player->GetName() << ".";
@@ -447,14 +447,14 @@ public:
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "WOWZERS " << player->GetName() << "!! You hit the jackpot! Here's your purse of " << Jackpot << " " << MoneyTypeText << "!";
             creature->MonsterWhisper(messageAction.str().c_str(), player);
-            player->GetSession()->SendAreaTriggerMessage(messageNotice.str().c_str());
+            player->GetSession()->SendAreaTriggerMessage( "%s",messageNotice.str().c_str());
             player->CLOSE_GOSSIP_MENU();
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
             return true;
         }
 
         // Why does it happen? Because it happens.. Roll the bones.. Roll the bones!
-        if (Roll >= 50)
+        if (Roll >= 51)
         {
             std::ostringstream messageAction;
             std::ostringstream messageNotice;
