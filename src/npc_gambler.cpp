@@ -68,10 +68,13 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 
 */
 
+#include "Chat.h"
 #include "Config.h"
 #include "Pet.h"
 #include "ScriptMgr.h"
 #include "ScriptedGossip.h"
+#include "Player.h"
+
 
 bool GamblerNPCAnnounce = true;
 
