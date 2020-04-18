@@ -198,7 +198,7 @@ public:
         else
         {
             MoneyTypeText = "Copper";                   // Gamble Copper
-            PlayerMoney = Copper;                       // Player Copper 
+            PlayerMoney = Copper;                       // Player Copper
             BetAmount = bet * 2;                        // Bet value in Copper
             WinAmount = BetAmount;                // Player Wins Copper
             JackpotAmount = Jackpot * 1;                // Jackpot value in Copper
@@ -208,7 +208,7 @@ public:
     }
 
     // Gossip Hello
-    bool OnGossipHello(Player * player, Creature * creature)
+    bool OnGossipHello(Player * player, Creature * creature) override
     {
         std::ostringstream messageCoinType;
         std::ostringstream messagePocket;
@@ -224,23 +224,18 @@ public:
         {
             std::ostringstream messageTaunt;
             messageTaunt << "Whadda we have here? A high-roller eh? Step right up " << player->GetName() << "!";
-            player->GetSession()->SendNotification(messageTaunt.str().c_str());
+            player->GetSession()->SendNotification("%s", messageTaunt.str().c_str());
         }
 
         // Reset # of bets placed
         Bets = 0;
 
         // Clean up the display if using Copper or Silver
-        if (Pocket >= 100000 && MoneyType == 1 || Pocket >= 100000 && MoneyType == 2)
-        {
+        if (Pocket >= 100000 && (MoneyType == 1 || MoneyType == 2)) {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
-        }
-        else if (Pocket >= 10000000 && MoneyType == 3)
-        {
+        } else if (Pocket >= 10000000 && MoneyType == 3) {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
-        }
-        else
-        {
+        } else {
             messagePocket << "Hi " << player->GetName() << ". I see you've got " << PlayerMoney << " " << MoneyTypeText << " to gamble.";
         }
 
@@ -256,7 +251,7 @@ public:
     }
 
     // Gossip Select
-    bool OnGossipSelect(Player * player, Creature * creature, uint32 sender, uint32 uiAction)
+    bool OnGossipSelect(Player * player, Creature * creature, uint32 sender, uint32 uiAction) override
     {
         // Strings
         std::ostringstream Option1;
@@ -388,22 +383,22 @@ public:
     }
 
     // Gossip Select Gold
-    bool OnGossipSelectMoney(Player* player, Creature* creature, uint32 sender, uint32 uiAction, uint32 bet)
+    bool OnGossipSelectMoney(Player* player, Creature* creature, uint32 /* sender */, uint32 /* uiAction */, uint32 bet)
     {
         player->PlayerTalkClass->ClearMenus();
 
         // Dice Roll
         uint32 Roll = 0;
 
-        // Generate a "random" number	
+        // Generate a "random" number
         Roll = urand(1, 100);
         Bets = Bets + 1;
 
         // The house always wins (discourage spamming for the jackpot)
         if (Bets >= 10 && Roll == 100)
         {
-            // If they have bet 10 times this session, decrement their roll 
-            // by 1 to prevent a roll of 100 and hitting the jackpot. 
+            // If they have bet 10 times this session, decrement their roll
+            // by 1 to prevent a roll of 100 and hitting the jackpot.
             Roll = Roll - 1;
         }
 
@@ -447,7 +442,7 @@ public:
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "WOWZERS " << player->GetName() << "!! You hit the jackpot! Here's your purse of " << Jackpot << " " << MoneyTypeText << "!";
             creature->MonsterWhisper(messageAction.str().c_str(), player);
-            player->GetSession()->SendAreaTriggerMessage(messageNotice.str().c_str());
+            player->GetSession()->SendAreaTriggerMessage("%s", messageNotice.str().c_str());
             player->CLOSE_GOSSIP_MENU();
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
             return true;
@@ -556,7 +551,7 @@ public:
     };
 
     // CREATURE AI
-    CreatureAI * GetAI(Creature * creature) const
+    CreatureAI * GetAI(Creature * creature) const override
     {
         return new NPC_PassiveAI(creature);
     }
