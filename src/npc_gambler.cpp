@@ -163,7 +163,7 @@ public:
     uint32 WinAmount = 0;
     uint32 PlayerMoney = 0;
     uint32 JackpotAmount = 0;
-    string MoneyTypeText = "Electrum";
+    std::string MoneyTypeText = "Electrum";
 
     // Bets
     uint32 Bets = 0;		// # of bets placed
