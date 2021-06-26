@@ -418,7 +418,7 @@ public:
             player->AddAura(228, player);	// Polymorph Chicken
             player->AddAura(5782, player);	// Fear
             creature->MonsterWhisper(messageTaunt.str().c_str(), player);
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             player->PlayDirectSound(5960); // Goblin Pissed
             creature->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
             return false;
@@ -437,7 +437,7 @@ public:
             messageNotice << "WOWZERS " << player->GetName() << "!! You hit the jackpot! Here's your purse of " << Jackpot << " " << MoneyTypeText << "!";
             creature->MonsterWhisper(messageAction.str().c_str(), player);
             player->GetSession()->SendAreaTriggerMessage("%s", messageNotice.str().c_str());
-            player->CLOSE_GOSSIP_MENU();
+            CloseGossipMenuFor(player);
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
             return true;
         }
