@@ -1,7 +1,0 @@
-CU_SET_PATH("CMAKE_MOD_NPCGAMBLER_DIR" "${CMAKE_CURRENT_LIST_DIR}")
-
-AC_ADD_SCRIPT("${CMAKE_CURRENT_LIST_DIR}/src/npc_gambler.cpp")
-
-AC_ADD_SCRIPT_LOADER("NPCGambler" "${CMAKE_CURRENT_LIST_DIR}/src/loader_gambler.h")
-
-AC_ADD_CONFIG_FILE("${CMAKE_CURRENT_LIST_DIR}/conf/npc_gambler.conf.dist")
