@@ -19,7 +19,7 @@ defined in the configuration. It's a nice way for players to make a little extra
 - A roll of 100 within the first 10 rolls hits the jackpot!
 - The jackpot can only be hit in the first 10 rolls of each session to discourage spam.
 - A little help is given to players losing 5 rolls in a row.
-magic
+
 ### To-Do
 
 - Track and display jackpot winners/dates.
