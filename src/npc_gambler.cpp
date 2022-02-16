@@ -109,19 +109,19 @@ public:
     void SetInitialWorldSettings()
     {
         // Get the bet amounts from config
-        GamblerNPCAnnounce = sConfigMgr->GetBoolDefault("Gambler.Announce", true);
-        Bet1 = sConfigMgr->GetIntDefault("Gambler.Amount1", 1);
-        Bet2 = sConfigMgr->GetIntDefault("Gambler.Amount2", 2);
-        Bet3 = sConfigMgr->GetIntDefault("Gambler.Amount3", 3);
-        Bet4 = sConfigMgr->GetIntDefault("Gambler.Amount4", 4);
-        Bet5 = sConfigMgr->GetIntDefault("Gambler.Amount5", 5);
-        Jackpot = sConfigMgr->GetIntDefault("Gambler.Jackpot", 50);
-        MoneyType = sConfigMgr->GetIntDefault("Gambler.MoneyType", 3);
-        EnableGold = sConfigMgr->GetIntDefault("Gambler.EnableGold", 1);
-        EnableSilver = sConfigMgr->GetIntDefault("Gambler.EnableSilver", 1);
-        EnableCopper = sConfigMgr->GetIntDefault("Gambler.EnableCopper", 1);
-        GamblerEmoteSpell = sConfigMgr->GetIntDefault("Gambler.MessageTimer", 44940);
-        GamblerMessageTimer = sConfigMgr->GetIntDefault("Gambler.MessageTimer", 60000);
+        GamblerNPCAnnounce = sConfigMgr->GetOption<bool>("Gambler.Announce", true);
+        Bet1 = sConfigMgr->GetOption<uint32>("Gambler.Amount1", 1);
+        Bet2 = sConfigMgr->GetOption<uint32>("Gambler.Amount2", 2);
+        Bet3 = sConfigMgr->GetOption<uint32>("Gambler.Amount3", 3);
+        Bet4 = sConfigMgr->GetOption<uint32>("Gambler.Amount4", 4);
+        Bet5 = sConfigMgr->GetOption<uint32>("Gambler.Amount5", 5);
+        Jackpot = sConfigMgr->GetOption<uint32>("Gambler.Jackpot", 50);
+        MoneyType = sConfigMgr->GetOption<uint32>("Gambler.MoneyType", 3);
+        EnableGold = sConfigMgr->GetOption<uint32>("Gambler.EnableGold", 1);
+        EnableSilver = sConfigMgr->GetOption<uint32>("Gambler.EnableSilver", 1);
+        EnableCopper = sConfigMgr->GetOption<uint32>("Gambler.EnableCopper", 1);
+        GamblerEmoteSpell = sConfigMgr->GetOption<uint32>("Gambler.MessageTimer", 44940);
+        GamblerMessageTimer = sConfigMgr->GetOption<uint32>("Gambler.MessageTimer", 60000);
 
         // Enforce Min/Max Time
         if (GamblerMessageTimer != 0)
