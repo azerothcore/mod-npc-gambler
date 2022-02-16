@@ -405,7 +405,7 @@ public:
         {
             std::ostringstream messageHelp;
             messageHelp << "Lady luck isn't on your side tonight " << player->GetName() << ".";
-            creature->MonsterWhisper(messageHelp.str().c_str(), player);
+            creature->Whisper(messageHelp.str().c_str(), player);
             Roll = Roll + 25;
             Losses = 0;
         }
@@ -417,7 +417,7 @@ public:
             messageTaunt << "Hey, I got no time for cheapskates " << player->GetName() << ". Come back when you have " << bet << " " << MoneyTypeText << "!";
             player->AddAura(228, player);	// Polymorph Chicken
             player->AddAura(5782, player);	// Fear
-            creature->MonsterWhisper(messageTaunt.str().c_str(), player);
+            creature->Whisper(messageTaunt.str().c_str(), player);
             CloseGossipMenuFor(player);
             player->PlayDirectSound(5960); // Goblin Pissed
             creature->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
@@ -435,7 +435,7 @@ public:
             player->CastSpell(player, 44940);
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "WOWZERS " << player->GetName() << "!! You hit the jackpot! Here's your purse of " << Jackpot << " " << MoneyTypeText << "!";
-            creature->MonsterWhisper(messageAction.str().c_str(), player);
+            creature->Whisper(messageAction.str().c_str(), player);
             player->GetSession()->SendAreaTriggerMessage("%s", messageNotice.str().c_str());
             CloseGossipMenuFor(player);
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
@@ -453,7 +453,7 @@ public:
             player->CastSpell(player, 47292);
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "Congratulations " << player->GetName() << ", You've won " << WinAmount << " " << MoneyTypeText << "!";
-            creature->MonsterWhisper(messageAction.str().c_str(), player);
+            creature->Whisper(messageAction.str().c_str(), player);
             ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
         }
@@ -465,7 +465,7 @@ public:
             Losses = Losses + 1;
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "Tough luck " << player->GetName() << ", you've lost " << WinAmount << " " << MoneyTypeText << "!";
-            creature->MonsterWhisper(messageAction.str().c_str(), player);
+            creature->Whisper(messageAction.str().c_str(), player);
             ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
             creature->HandleEmoteCommand(EMOTE_ONESHOT_QUESTION);
         }
@@ -504,7 +504,7 @@ public:
                     {
                     case 1:
                     {
-                        me->MonsterSay("Come one, come all! Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
+                        me->Say("Come one, come all! Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
                         me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
 
                         if (GamblerEmoteSpell != 0)
@@ -517,21 +517,21 @@ public:
                     }
                     case 2:
                     {
-                        me->MonsterSay("Come on! Place your bets, Don't be a chicken!", LANG_UNIVERSAL, NULL);
+                        me->Say("Come on! Place your bets, Don't be a chicken!", LANG_UNIVERSAL, NULL);
                         me->HandleEmoteCommand(EMOTE_ONESHOT_CHICKEN);
                         MessageTimer = urand(60000, 180000);
                         break;
                     }
                     case 3:
                     {
-                        me->MonsterSay("Don't make me sad, Come and gamble! Step right up and win today!", LANG_UNIVERSAL, NULL);
+                        me->Say("Don't make me sad, Come and gamble! Step right up and win today!", LANG_UNIVERSAL, NULL);
                         me->HandleEmoteCommand(EMOTE_ONESHOT_CRY);
                         MessageTimer = urand(60000, 180000);
                         break;
                     }
                     default:
                     {
-                        me->MonsterSay("Come one, come all!Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
+                        me->Say("Come one, come all!Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
                         me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
                         me->CastSpell(me, 44940);
                         MessageTimer = urand(60000, 180000);
