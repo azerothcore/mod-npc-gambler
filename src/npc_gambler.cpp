@@ -95,11 +95,12 @@ uint32 GamblerMessageTimer;
 class GamblerConfig : public WorldScript
 {
 public:
-    GamblerConfig() : WorldScript("GamblerConfig") { }
+    GamblerConfig() : WorldScript("GamblerConfig") {}
 
     void OnBeforeConfigLoad(bool reload) override
     {
-        if (!reload) {
+        if (!reload)
+        {
             // Load Configuration Settings
             SetInitialWorldSettings();
         }
@@ -140,7 +141,7 @@ class GamblerAnnounce : public PlayerScript
 public:
     GamblerAnnounce() : PlayerScript("GamblerAnnounce") {}
 
-    void OnLogin(Player* player)
+    void OnLogin(Player *player)
     {
         // Announce Module
         if (GamblerNPCAnnounce)
@@ -154,8 +155,7 @@ class gamble_npc : public CreatureScript
 {
 
 public:
-
-    gamble_npc() : CreatureScript("gamble_npc") { }
+    gamble_npc() : CreatureScript("gamble_npc") {}
 
     // Money
     uint32 Pocket = 0;
@@ -166,43 +166,43 @@ public:
     std::string MoneyTypeText = "Electrum";
 
     // Bets
-    uint32 Bets = 0;		// # of bets placed
-    uint32 Wins = 0;		// # of wins
-    uint32 Losses = 0;		// # of losses
+    uint32 Bets = 0;   // # of bets placed
+    uint32 Wins = 0;   // # of wins
+    uint32 Losses = 0; // # of losses
 
     // Calculate Gamble Amounts
     int CalcMoney(int Copper, int bet)
     {
         if (MoneyType == 3)
         {
-            MoneyTypeText = "Gold";                     // Gamble Gold
-            PlayerMoney = Copper / 10000;               // Player Gold
-            BetAmount = ((bet * 10000) * 2);            // Bet value in Gold
-            WinAmount = BetAmount / 10000;        // Player Wins Gold
-            JackpotAmount = Jackpot * 10000;            // Jackpot value in Copper
+            MoneyTypeText = "Gold";          // Gamble Gold
+            PlayerMoney = Copper / 10000;    // Player Gold
+            BetAmount = ((bet * 10000) * 2); // Bet value in Gold
+            WinAmount = BetAmount / 10000;   // Player Wins Gold
+            JackpotAmount = Jackpot * 10000; // Jackpot value in Copper
         }
         else if (MoneyType == 2)
         {
-            MoneyTypeText = "Silver";                   // Gamble Silver
-            PlayerMoney = Copper / 100;                 // Player Silver
-            BetAmount = ((bet * 100) * 2);              // Bet value in Silver
-            WinAmount = BetAmount / 100;          // Player Wins Silver
-            JackpotAmount = Jackpot * 100;              // Jackpot value in Copper
+            MoneyTypeText = "Silver";      // Gamble Silver
+            PlayerMoney = Copper / 100;    // Player Silver
+            BetAmount = ((bet * 100) * 2); // Bet value in Silver
+            WinAmount = BetAmount / 100;   // Player Wins Silver
+            JackpotAmount = Jackpot * 100; // Jackpot value in Copper
         }
         else
         {
-            MoneyTypeText = "Copper";                   // Gamble Copper
-            PlayerMoney = Copper;                       // Player Copper
-            BetAmount = bet * 2;                        // Bet value in Copper
-            WinAmount = BetAmount;                // Player Wins Copper
-            JackpotAmount = Jackpot * 1;                // Jackpot value in Copper
+            MoneyTypeText = "Copper";    // Gamble Copper
+            PlayerMoney = Copper;        // Player Copper
+            BetAmount = bet * 2;         // Bet value in Copper
+            WinAmount = BetAmount;       // Player Wins Copper
+            JackpotAmount = Jackpot * 1; // Jackpot value in Copper
         }
 
         return Copper;
     }
 
     // Gossip Hello
-    bool OnGossipHello(Player * player, Creature * creature) override
+    bool OnGossipHello(Player *player, Creature *creature) override
     {
         std::ostringstream messageCoinType;
         std::ostringstream messagePocket;
@@ -225,11 +225,16 @@ public:
         Bets = 0;
 
         // Clean up the display if using Copper or Silver
-        if (Pocket >= 100000 && (MoneyType == 1 || MoneyType == 2)) {
+        if (Pocket >= 100000 && (MoneyType == 1 || MoneyType == 2))
+        {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
-        } else if (Pocket >= 10000000 && MoneyType == 3) {
+        }
+        else if (Pocket >= 10000000 && MoneyType == 3)
+        {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
-        } else {
+        }
+        else
+        {
             messagePocket << "Hi " << player->GetName() << ". I see you've got " << PlayerMoney << " " << MoneyTypeText << " to gamble.";
         }
 
@@ -245,7 +250,7 @@ public:
     }
 
     // Gossip Select
-    bool OnGossipSelect(Player * player, Creature * creature, uint32 sender, uint32 uiAction) override
+    bool OnGossipSelect(Player *player, Creature *creature, uint32 sender, uint32 uiAction) override
     {
         // Strings
         std::ostringstream Option1;
@@ -377,7 +382,7 @@ public:
     }
 
     // Gossip Select Gold
-    bool OnGossipSelectMoney(Player* player, Creature* creature, uint32 /* sender */, uint32 /* uiAction */, uint32 bet)
+    bool OnGossipSelectMoney(Player *player, Creature *creature, uint32 /* sender */, uint32 /* uiAction */, uint32 bet)
     {
         player->PlayerTalkClass->ClearMenus();
 
@@ -405,7 +410,7 @@ public:
         {
             std::ostringstream messageHelp;
             messageHelp << "Lady luck isn't on your side tonight " << player->GetName() << ".";
-            creature->Whisper(messageHelp.str().c_str(), player);
+            creature->Whisper(messageHelp.str().c_str(), LANG_UNIVERSAL, player);
             Roll = Roll + 25;
             Losses = 0;
         }
@@ -415,9 +420,9 @@ public:
         {
             std::ostringstream messageTaunt;
             messageTaunt << "Hey, I got no time for cheapskates " << player->GetName() << ". Come back when you have " << bet << " " << MoneyTypeText << "!";
-            player->AddAura(228, player);	// Polymorph Chicken
-            player->AddAura(5782, player);	// Fear
-            creature->Whisper(messageTaunt.str().c_str(), player);
+            player->AddAura(228, player);  // Polymorph Chicken
+            player->AddAura(5782, player); // Fear
+            creature->Whisper(messageTaunt.str().c_str(), LANG_UNIVERSAL, player);
             CloseGossipMenuFor(player);
             player->PlayDirectSound(5960); // Goblin Pissed
             creature->HandleEmoteCommand(EMOTE_ONESHOT_RUDE);
@@ -435,7 +440,7 @@ public:
             player->CastSpell(player, 44940);
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "WOWZERS " << player->GetName() << "!! You hit the jackpot! Here's your purse of " << Jackpot << " " << MoneyTypeText << "!";
-            creature->Whisper(messageAction.str().c_str(), player);
+            creature->Whisper(messageAction.str().c_str(), LANG_UNIVERSAL, player);
             player->GetSession()->SendAreaTriggerMessage("%s", messageNotice.str().c_str());
             CloseGossipMenuFor(player);
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
@@ -453,7 +458,7 @@ public:
             player->CastSpell(player, 47292);
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "Congratulations " << player->GetName() << ", You've won " << WinAmount << " " << MoneyTypeText << "!";
-            creature->Whisper(messageAction.str().c_str(), player);
+            creature->Whisper(messageAction.str().c_str(), LANG_UNIVERSAL, player);
             ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
             creature->HandleEmoteCommand(EMOTE_ONESHOT_APPLAUD);
         }
@@ -465,7 +470,7 @@ public:
             Losses = Losses + 1;
             messageAction << "The bones come to rest with a total roll of " << Roll << ".";
             messageNotice << "Tough luck " << player->GetName() << ", you've lost " << WinAmount << " " << MoneyTypeText << "!";
-            creature->Whisper(messageAction.str().c_str(), player);
+            creature->Whisper(messageAction.str().c_str(), LANG_UNIVERSAL, player);
             ChatHandler(player->GetSession()).SendSysMessage(messageNotice.str().c_str());
             creature->HandleEmoteCommand(EMOTE_ONESHOT_QUESTION);
         }
@@ -477,7 +482,7 @@ public:
     // Passive Emotes
     struct NPC_PassiveAI : public ScriptedAI
     {
-        NPC_PassiveAI(Creature * creature) : ScriptedAI(creature) { }
+        NPC_PassiveAI(Creature *creature) : ScriptedAI(creature) {}
 
         uint32 Choice;
         uint32 MessageTimer;
@@ -540,12 +545,15 @@ public:
                     }
                 }
             }
-            else { MessageTimer -= diff; }
+            else
+            {
+                MessageTimer -= diff;
+            }
         };
     };
 
     // CREATURE AI
-    CreatureAI * GetAI(Creature * creature) const override
+    CreatureAI *GetAI(Creature *creature) const override
     {
         return new NPC_PassiveAI(creature);
     }
