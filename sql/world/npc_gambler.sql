@@ -11,12 +11,12 @@ SET
 @MinLevel 	:= 80,
 @MaxLevel 	:= 80,
 @Faction 	:= 35,
-@NPCFlag 	:= 0,
+@NPCFlag 	:= 81,
 @Scale		:= 1.0,
 @Rank		:= 0,
 @Type 		:= 7,
 @TypeFlags 	:= 0,
-@FlagsExtra := 2,
+@FlagsExtra := 16777218,
 @AIName		:= "SmartAI",
 @Script 	:= "gamble_npc";
 
