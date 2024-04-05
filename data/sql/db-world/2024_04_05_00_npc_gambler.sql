@@ -1,24 +1,21 @@
--- --------------------------------------------------------------------------------------
---	GAMBLER - 601020
--- --------------------------------------------------------------------------------------
 SET
-@Entry 		:= 601020,
-@Model 		:= 7337, -- Goblin Banker
-@Name 		:= "Skinny",
-@Title 		:= "Gambler",
-@Icon 		:= "LootAll",
+@Entry      := 601020,
+@Model      := 7337, -- Goblin Banker
+@Name       := "Skinny",
+@Title      := "Gambler",
+@Icon       := "LootAll",
 @GossipMenu := 0,
-@MinLevel 	:= 80,
-@MaxLevel 	:= 80,
-@Faction 	:= 35,
-@NPCFlag 	:= 81,
-@Scale		:= 1.0,
-@Rank		:= 0,
-@Type 		:= 7,
-@TypeFlags 	:= 0,
-@FlagsExtra := 16777218,
-@AIName		:= "SmartAI",
-@Script 	:= "gamble_npc";
+@MinLevel   := 80,
+@MaxLevel   := 80,
+@Faction    := 35,
+@NPCFlag    := 0,
+@Scale      := 1.0,
+@Rank       := 0,
+@Type       := 7,
+@TypeFlags  := 0,
+@FlagsExtra := 2,
+@AIName     := "SmartAI",
+@Script     := "gamble_npc";
 
 -- NPC
 DELETE FROM creature_template WHERE entry = @Entry;
