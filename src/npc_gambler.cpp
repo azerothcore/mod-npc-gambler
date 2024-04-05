@@ -276,7 +276,7 @@ public:
         switch (uiAction)
         {
 
-            // Gamble Menu
+        // Gamble Menu
         case GOSSIP_ACTION_INFO_DEF + 1:
             Option1 << Bet1 << " " << MoneyTypeText;
             Option2 << Bet2 << " " << MoneyTypeText;
@@ -292,7 +292,7 @@ public:
             player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
             break;
 
-            // Rules Menu
+        // Rules Menu
         case GOSSIP_ACTION_INFO_DEF + 2:
             messageInstruct << "The rules are simple " << player->GetName() << ".. If you roll higher than 50, you win double the bet amount. Otherwise, you lose twice the bet amount. A roll of 100 wins the jackpot. Good Luck!";
             AddGossipItemFor(player, GOSSIP_ICON_CHAT, messageInstruct.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
@@ -300,32 +300,32 @@ public:
             player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
             break;
 
-            // Bet 1
+        // Bet 1
         case GOSSIP_ACTION_INFO_DEF + 3:
             OnGossipSelectMoney(player, creature, 1, 1, Bet1);
             break;
 
-            // Bet 2
+        // Bet 2
         case GOSSIP_ACTION_INFO_DEF + 4:
             OnGossipSelectMoney(player, creature, 1, 1, Bet2);
             break;
 
-            // Bet 3
+        // Bet 3
         case GOSSIP_ACTION_INFO_DEF + 5:
             OnGossipSelectMoney(player, creature, 1, 1, Bet3);
             break;
 
-            // Bet 4
+        // Bet 4
         case GOSSIP_ACTION_INFO_DEF + 6:
             OnGossipSelectMoney(player, creature, 1, 1, Bet4);
             break;
 
-            // Bet 5
+        // Bet 5
         case GOSSIP_ACTION_INFO_DEF + 7:
             OnGossipSelectMoney(player, creature, 1, 1, Bet5);
             break;
 
-            // MoneyType Menu
+        // MoneyType Menu
         case GOSSIP_ACTION_INFO_DEF + 8:
             CoinCopper << "Copper";
             CoinSilver << "Silver";
@@ -351,28 +351,28 @@ public:
 
             break;
 
-            // MoneyType: Copper
+        // MoneyType: Copper
         case GOSSIP_ACTION_INFO_DEF + 10:
             MoneyType = 1;
             player->PlayerTalkClass->ClearMenus();
             OnGossipHello(player, creature);
             break;
 
-            // MoneyType: Silver
+        // MoneyType: Silver
         case GOSSIP_ACTION_INFO_DEF + 11:
             MoneyType = 2;
             player->PlayerTalkClass->ClearMenus();
             OnGossipHello(player, creature);
             break;
 
-            // MoneyTaype: Gold
+        // MoneyTaype: Gold
         case GOSSIP_ACTION_INFO_DEF + 12:
             MoneyType = 3;
             player->PlayerTalkClass->ClearMenus();
             OnGossipHello(player, creature);
             break;
 
-            // Main Menu
+        // Main Menu
         case GOSSIP_ACTION_INFO_DEF + 14:
             player->PlayerTalkClass->ClearMenus();
             OnGossipHello(player, creature);

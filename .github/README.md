@@ -1,6 +1,10 @@
 # ![logo](https://raw.githubusercontent.com/azerothcore/azerothcore.github.io/master/images/logo-github.png) AzerothCore
+
 ## Gambler NPC
-- Latest build status with azerothcore: [![Build Status](https://github.com/azerothcore/mod-npc-gambler/workflows/core-build/badge.svg?branch=master&event=push)](https://github.com/azerothcore/mod-npc-gambler)
+
+- Latest build status with azerothcore:
+
+[![Build Status](https://github.com/azerothcore/mod-npc-gambler/workflows/core-build/badge.svg)](https://github.com/azerothcore/mod-npc-gambler)
 
 _This module was created for [StygianCore](https://rebrand.ly/stygiancoreproject). A World of Warcraft 3.3.5a Solo/LAN repack by StygianTheBest | [GitHub](https://rebrand.ly/stygiangithub) | [Website](https://rebrand.ly/stygianthebest))_
 _This module has now being ported to AzerothCore by gtao725 (https://github.com/gtao725/)._
@@ -35,12 +39,12 @@ defined in the configuration. It's a nice way for players to make a little extra
 
 ### Version
 
+- v2024.04.05 - Update the module to work with the latest version of the emulator
 - v2019.04.17 - Fix display of win/lose amount for values 100 or above, applicable to copper/silver/gold
 - v2019.04.15 - Ported to AzerothCore by gtao725 (https://github.com/gtao725/)
 - v2019.02.13 - Redesign, Add Coin Type Options, Update AI
 - v2018.12.09 - Update config
 - v2017.08.10 - Release
-
 
 ### CREDITS
 
