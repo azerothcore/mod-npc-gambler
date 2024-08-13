@@ -218,7 +218,7 @@ public:
         {
             std::ostringstream messageTaunt;
             messageTaunt << "Whadda we have here? A high-roller eh? Step right up " << player->GetName() << "!";
-            player->GetSession()->SendNotification("%s", messageTaunt.str().c_str());
+            ChatHandler(player->GetSession()).SendNotification(messageTaunt.str().c_str());
         }
 
         // Reset # of bets placed
