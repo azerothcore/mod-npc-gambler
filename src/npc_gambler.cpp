@@ -68,13 +68,13 @@ This code and content is released under the [GNU AGPL v3](https://github.com/aze
 
 */
 
+#include "Chat.h"
 #include "Config.h"
 #include "Pet.h"
-#include "ScriptMgr.h"
-#include "ScriptedGossip.h"
-#include "Chat.h"
 #include "Player.h"
 #include "ScriptedCreature.h"
+#include "ScriptedGossip.h"
+#include "ScriptMgr.h"
 
 bool GamblerNPCAnnounce = true;
 
@@ -95,7 +95,9 @@ uint32 GamblerMessageTimer;
 class GamblerConfig : public WorldScript
 {
 public:
-    GamblerConfig() : WorldScript("GamblerConfig") {}
+    GamblerConfig() : WorldScript("GamblerConfig", {
+        WORLDHOOK_ON_BEFORE_CONFIG_LOAD
+    }) {}
 
     void OnBeforeConfigLoad(bool reload) override
     {
@@ -126,12 +128,8 @@ public:
 
         // Enforce Min/Max Time
         if (GamblerMessageTimer != 0)
-        {
             if (GamblerMessageTimer < 60000 || GamblerMessageTimer > 300000)
-            {
                 GamblerMessageTimer = 60000;
-            }
-        }
     }
 };
 
@@ -139,15 +137,15 @@ class GamblerAnnounce : public PlayerScript
 {
 
 public:
-    GamblerAnnounce() : PlayerScript("GamblerAnnounce") {}
+    GamblerAnnounce() : PlayerScript("GamblerAnnounce", {
+        PLAYERHOOK_ON_LOGIN
+    }) {}
 
-    void OnLogin(Player *player)
+    void OnPlayerLogin(Player *player)
     {
         // Announce Module
         if (GamblerNPCAnnounce)
-        {
             ChatHandler(player->GetSession()).SendSysMessage("This server is running the |cff4CFF00GamblerNPC |rmodule.");
-        }
     }
 };
 
@@ -226,17 +224,11 @@ public:
 
         // Clean up the display if using Copper or Silver
         if (Pocket >= 100000 && (MoneyType == 1 || MoneyType == 2))
-        {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
-        }
         else if (Pocket >= 10000000 && MoneyType == 3)
-        {
             messagePocket << "Hi " << player->GetName() << ". I see you have PLENTY of " << MoneyTypeText << " to gamble.";
-        }
         else
-        {
             messagePocket << "Hi " << player->GetName() << ". I see you've got " << PlayerMoney << " " << MoneyTypeText << " to gamble.";
-        }
 
         // Main Menu
         messageJackpot << "Place your bet. Today's Jackpot is " << Jackpot << " " << MoneyTypeText << ".";
@@ -268,115 +260,108 @@ public:
         player->PlayerTalkClass->ClearMenus();
 
         if (sender != GOSSIP_SENDER_MAIN)
-        {
             return false;
-        }
 
         // Main Menu
         switch (uiAction)
         {
 
-        // Gamble Menu
-        case GOSSIP_ACTION_INFO_DEF + 1:
-            Option1 << Bet1 << " " << MoneyTypeText;
-            Option2 << Bet2 << " " << MoneyTypeText;
-            Option3 << Bet3 << " " << MoneyTypeText;
-            Option4 << Bet4 << " " << MoneyTypeText;
-            Option5 << Bet5 << " " << MoneyTypeText;
-            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option1.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
-            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option2.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
-            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option3.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
-            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option4.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
-            AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option5.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
-            AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, " Back", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
-            player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
-            break;
+            // Gamble Menu
+            case GOSSIP_ACTION_INFO_DEF + 1:
+                Option1 << Bet1 << " " << MoneyTypeText;
+                Option2 << Bet2 << " " << MoneyTypeText;
+                Option3 << Bet3 << " " << MoneyTypeText;
+                Option4 << Bet4 << " " << MoneyTypeText;
+                Option5 << Bet5 << " " << MoneyTypeText;
+                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option1.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option2.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option3.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 5);
+                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option4.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 6);
+                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, Option5.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 7);
+                AddGossipItemFor(player, GOSSIP_ICON_INTERACT_1, " Back", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
+                player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
+                break;
 
-        // Rules Menu
-        case GOSSIP_ACTION_INFO_DEF + 2:
-            messageInstruct << "The rules are simple " << player->GetName() << ".. If you roll higher than 50, you win double the bet amount. Otherwise, you lose twice the bet amount. A roll of 100 wins the jackpot. Good Luck!";
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, messageInstruct.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
-            AddGossipItemFor(player, GOSSIP_ICON_TALK, "Alright Skinny, I'm up for some gambling.", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-            player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
-            break;
+            // Rules Menu
+            case GOSSIP_ACTION_INFO_DEF + 2:
+                messageInstruct << "The rules are simple " << player->GetName() << ".. If you roll higher than 50, you win double the bet amount. Otherwise, you lose twice the bet amount. A roll of 100 wins the jackpot. Good Luck!";
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, messageInstruct.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 14);
+                AddGossipItemFor(player, GOSSIP_ICON_TALK, "Alright Skinny, I'm up for some gambling.", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+                player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
+                break;
 
-        // Bet 1
-        case GOSSIP_ACTION_INFO_DEF + 3:
-            OnGossipSelectMoney(player, creature, 1, 1, Bet1);
-            break;
+            // Bet 1
+            case GOSSIP_ACTION_INFO_DEF + 3:
+                OnGossipSelectMoney(player, creature, 1, 1, Bet1);
+                break;
 
-        // Bet 2
-        case GOSSIP_ACTION_INFO_DEF + 4:
-            OnGossipSelectMoney(player, creature, 1, 1, Bet2);
-            break;
+            // Bet 2
+            case GOSSIP_ACTION_INFO_DEF + 4:
+                OnGossipSelectMoney(player, creature, 1, 1, Bet2);
+                break;
 
-        // Bet 3
-        case GOSSIP_ACTION_INFO_DEF + 5:
-            OnGossipSelectMoney(player, creature, 1, 1, Bet3);
-            break;
+            // Bet 3
+            case GOSSIP_ACTION_INFO_DEF + 5:
+                OnGossipSelectMoney(player, creature, 1, 1, Bet3);
+                break;
 
-        // Bet 4
-        case GOSSIP_ACTION_INFO_DEF + 6:
-            OnGossipSelectMoney(player, creature, 1, 1, Bet4);
-            break;
+            // Bet 4
+            case GOSSIP_ACTION_INFO_DEF + 6:
+                OnGossipSelectMoney(player, creature, 1, 1, Bet4);
+                break;
 
-        // Bet 5
-        case GOSSIP_ACTION_INFO_DEF + 7:
-            OnGossipSelectMoney(player, creature, 1, 1, Bet5);
-            break;
+            // Bet 5
+            case GOSSIP_ACTION_INFO_DEF + 7:
+                OnGossipSelectMoney(player, creature, 1, 1, Bet5);
+                break;
 
-        // MoneyType Menu
-        case GOSSIP_ACTION_INFO_DEF + 8:
-            CoinCopper << "Copper";
-            CoinSilver << "Silver";
-            CoinGold << "Gold";
-            messageCoins << "Whatta ya gamblin' with " << player->GetName() << "?";
-            AddGossipItemFor(player, GOSSIP_ICON_CHAT, messageCoins.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
+            // MoneyType Menu
+            case GOSSIP_ACTION_INFO_DEF + 8:
+                CoinCopper << "Copper";
+                CoinSilver << "Silver";
+                CoinGold << "Gold";
+                messageCoins << "Whatta ya gamblin' with " << player->GetName() << "?";
+                AddGossipItemFor(player, GOSSIP_ICON_CHAT, messageCoins.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 8);
 
-            if (EnableCopper)
-            {
-                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, CoinCopper.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
-            }
+                if (EnableCopper)
+                    AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, CoinCopper.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 10);
 
-            if (EnableSilver)
-            {
-                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, CoinSilver.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
-            }
+                if (EnableSilver)
+                    AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, CoinSilver.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 11);
 
-            if (EnableGold)
-            {
-                AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, CoinGold.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
-            }
-            player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
+                if (EnableGold)
+                    AddGossipItemFor(player, GOSSIP_ICON_MONEY_BAG, CoinGold.str(), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 12);
 
-            break;
+                player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
 
-        // MoneyType: Copper
-        case GOSSIP_ACTION_INFO_DEF + 10:
-            MoneyType = 1;
-            player->PlayerTalkClass->ClearMenus();
-            OnGossipHello(player, creature);
-            break;
+                break;
 
-        // MoneyType: Silver
-        case GOSSIP_ACTION_INFO_DEF + 11:
-            MoneyType = 2;
-            player->PlayerTalkClass->ClearMenus();
-            OnGossipHello(player, creature);
-            break;
+            // MoneyType: Copper
+            case GOSSIP_ACTION_INFO_DEF + 10:
+                MoneyType = 1;
+                player->PlayerTalkClass->ClearMenus();
+                OnGossipHello(player, creature);
+                break;
 
-        // MoneyTaype: Gold
-        case GOSSIP_ACTION_INFO_DEF + 12:
-            MoneyType = 3;
-            player->PlayerTalkClass->ClearMenus();
-            OnGossipHello(player, creature);
-            break;
+            // MoneyType: Silver
+            case GOSSIP_ACTION_INFO_DEF + 11:
+                MoneyType = 2;
+                player->PlayerTalkClass->ClearMenus();
+                OnGossipHello(player, creature);
+                break;
 
-        // Main Menu
-        case GOSSIP_ACTION_INFO_DEF + 14:
-            player->PlayerTalkClass->ClearMenus();
-            OnGossipHello(player, creature);
-            break;
+            // MoneyTaype: Gold
+            case GOSSIP_ACTION_INFO_DEF + 12:
+                MoneyType = 3;
+                player->PlayerTalkClass->ClearMenus();
+                OnGossipHello(player, creature);
+                break;
+
+            // Main Menu
+            case GOSSIP_ACTION_INFO_DEF + 14:
+                player->PlayerTalkClass->ClearMenus();
+                OnGossipHello(player, creature);
+                break;
         }
         return true;
     }
@@ -507,41 +492,39 @@ public:
 
                     switch (Choice)
                     {
-                    case 1:
-                    {
-                        me->Say("Come one, come all! Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
-
-                        if (GamblerEmoteSpell != 0)
+                        case 1:
                         {
-                            me->CastSpell(me, 44940);
-                        }
+                            me->Say("Come one, come all! Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
+                            me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
 
-                        MessageTimer = urand(60000, 180000);
-                        break;
-                    }
-                    case 2:
-                    {
-                        me->Say("Come on! Place your bets, Don't be a chicken!", LANG_UNIVERSAL, NULL);
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_CHICKEN);
-                        MessageTimer = urand(60000, 180000);
-                        break;
-                    }
-                    case 3:
-                    {
-                        me->Say("Don't make me sad, Come and gamble! Step right up and win today!", LANG_UNIVERSAL, NULL);
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_CRY);
-                        MessageTimer = urand(60000, 180000);
-                        break;
-                    }
-                    default:
-                    {
-                        me->Say("Come one, come all!Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
-                        me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
-                        me->CastSpell(me, 44940);
-                        MessageTimer = urand(60000, 180000);
-                        break;
-                    }
+                            if (GamblerEmoteSpell != 0)
+                                me->CastSpell(me, 44940);
+
+                            MessageTimer = urand(60000, 180000);
+                            break;
+                        }
+                        case 2:
+                        {
+                            me->Say("Come on! Place your bets, Don't be a chicken!", LANG_UNIVERSAL, NULL);
+                            me->HandleEmoteCommand(EMOTE_ONESHOT_CHICKEN);
+                            MessageTimer = urand(60000, 180000);
+                            break;
+                        }
+                        case 3:
+                        {
+                            me->Say("Don't make me sad, Come and gamble! Step right up and win today!", LANG_UNIVERSAL, NULL);
+                            me->HandleEmoteCommand(EMOTE_ONESHOT_CRY);
+                            MessageTimer = urand(60000, 180000);
+                            break;
+                        }
+                        default:
+                        {
+                            me->Say("Come one, come all!Step right up to Skinny's! Place your bets, Place your bets!", LANG_UNIVERSAL, NULL);
+                            me->HandleEmoteCommand(EMOTE_ONESHOT_EXCLAMATION);
+                            me->CastSpell(me, 44940);
+                            MessageTimer = urand(60000, 180000);
+                            break;
+                        }
                     }
                 }
             }
